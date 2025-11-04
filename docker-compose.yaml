@@ -1,0 +1,21 @@
+services:
+  dnstt-server:
+    container_name: dnstt-server
+    image: ghcr.io/kbnchk/dnstt-server:latest
+    command: ["-udp", ":5300", "-privkey-file", "/keys/server.key", "<YOUR_DNS_ZONE_HERE>" , "host.docker.internal:22"]
+    ports:
+      - "53:5300/udp"
+    volumes:
+      - dnstt-keys:/keys
+    networks:
+      - dnstt_net
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
+
+volumes:
+  dnstt-keys:
+
+networks:
+ dnstt_net:
+   driver: bridge
